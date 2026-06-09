@@ -14,6 +14,7 @@ func _ready() -> void:
 	# Default
 	all["block1x1"] = [preload("res://assets/block1x1.blend"), 1, 1, Type.DEFEND]
 	all["block2x2"] = [preload("res://assets/block2x2.blend"), 2, 2, Type.DEFEND]
+	all["cannon"] = [preload("res://assets/cannon.blend"), 2, 2, Type.ATTACK]
 
 	for key in all:
 		current[key] = all[key]

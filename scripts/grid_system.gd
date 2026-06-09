@@ -4,6 +4,7 @@ extends Node3D
 
 @export var selection_menu: SelectionMenu
 @export var placing_area: CollisionShape3D
+@export var helper_ghost: Node3D
 @export var camera: Camera3D
 
 var intersect_pos: Vector3 = Vector3.ZERO
@@ -15,6 +16,7 @@ var on_menu: bool = false
 ## structure: grid_pos(Vector2) = [ instance, key_string: String ]
 var grid_data: Dictionary
 
+
 func _ready() -> void:
 	init_grid_data()
 
@@ -22,6 +24,8 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	shoot_ray()
 	grid_position_process()
+
+	helper_ghost.position = grid_pos
 
 	if Input.is_action_just_pressed("place") and can_place and !on_menu:
 		place()
@@ -43,10 +47,12 @@ func shoot_ray() -> void:
 
 	if !ray_result.is_empty():
 		can_place = true
+		helper_ghost_replace()
 		intersect_pos = ray_result["position"]
 		intersect_pos = Vector3i(intersect_pos)
 	else:
 		can_place = false
+		helper_ghost_delete()
 
 
 func grid_position_process() -> void:
@@ -75,6 +81,19 @@ func delete():
 		data[0].queue_free()
 
 
+func helper_ghost_delete() -> void:
+	for child in helper_ghost.get_children():
+		child.queue_free()
+
+
+func helper_ghost_replace() -> void:
+	helper_ghost_delete()
+	var data: Array = get_current_key_data()
+	var instance = data[0].instantiate()
+	helper_ghost.add_child(instance)
+
+
+
 func get_current_key_data() -> Array:
 	return MeshArray.current[selection_menu.current_key]
 
@@ -99,3 +118,7 @@ func _on_selection_menu_focus_entered() -> void:
 
 func _on_selection_menu_focus_exited() -> void:
 	on_menu = true
+
+
+func _on_selection_menu_current_key_changed() -> void:
+	helper_ghost_replace()

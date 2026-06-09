@@ -14,10 +14,11 @@ size = Vector2(50, 50)
 [sub_resource type="BoxShape3D" id="BoxShape3D_v4frj"]
 size = Vector3(10, 1, 10)
 
-[node name="GridSystem" type="Node3D" unique_id=941752817 node_paths=PackedStringArray("selection_menu", "placing_area", "camera")]
+[node name="GridSystem" type="Node3D" unique_id=941752817 node_paths=PackedStringArray("selection_menu", "placing_area", "helper_ghost", "camera")]
 script = ExtResource("1_8615o")
 selection_menu = NodePath("SelectionMenu")
 placing_area = NodePath("StaticBody3D/CollisionShape3D")
+helper_ghost = NodePath("Helper")
 camera = NodePath("Camera")
 
 [node name="SelectionMenu" type="BoxContainer" parent="." unique_id=1092775051 node_paths=PackedStringArray("vbox1", "vbox2")]
@@ -73,5 +74,8 @@ mesh = SubResource("PlaneMesh_hmd7o")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -5)
 shape = SubResource("BoxShape3D_v4frj")
 
+[node name="Helper" type="Node3D" parent="." unique_id=948603687]
+
+[connection signal="current_key_changed" from="SelectionMenu" to="." method="_on_selection_menu_current_key_changed"]
 [connection signal="focus_entered" from="SelectionMenu" to="." method="_on_selection_menu_focus_entered"]
 [connection signal="focus_exited" from="SelectionMenu" to="." method="_on_selection_menu_focus_exited"]

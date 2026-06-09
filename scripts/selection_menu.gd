@@ -8,6 +8,8 @@ extends BoxContainer
 
 @onready var current_key = get_parent().get_node("Label").text
 
+signal current_key_changed
+
 func _ready() -> void:
 	vbox1.get_child(0).queue_free()
 	var i = 0
@@ -25,4 +27,7 @@ func _ready() -> void:
 
 func _on_item_pressed(item: Button):
 	current_key = item.get_node("Label").text
+
+	current_key_changed.emit()
+
 	get_parent().get_node("Label").text = current_key
