@@ -34,6 +34,7 @@ func shoot_ray() -> void:
 # 	intersect_pos = round(intersect_pos)
 
 func place(spawn_pos: Vector3):
-	var instance = MeshArray.current[selection_menu.current_key][0].instantiate()
-	instance.position = spawn_pos
+	var data: Array = MeshArray.current[selection_menu.current_key]
+	var instance = data[0].instantiate()
+	instance.position = spawn_pos + Vector3(0.5 * data[1], 0, -0.5 * data[2])
 	get_parent().add_child(instance)

@@ -54,7 +54,7 @@ text = "block1x1"
 horizontal_alignment = 1
 
 [node name="Camera" type="Camera3D" parent="." unique_id=592301119]
-transform = Transform3D(1, 0, 0, 0, 0.5, 0.86602545, 0, -0.86602545, 0.5, 0.7120762, 7.615695, 4.3238955)
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.86602545, 0, -0.86602545, 0.5, 12, 7.5, -1)
 keep_aspect = 0
 projection = 1
 current = true
@@ -64,9 +64,10 @@ size = 40.0
 collision_layer = 2
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=768970208]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, -5)
 material_override = SubResource("StandardMaterial3D_v4frj")
 mesh = SubResource("PlaneMesh_hmd7o")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=570679015]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -5)
 shape = SubResource("BoxShape3D_v4frj")
