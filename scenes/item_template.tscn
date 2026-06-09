@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://d4usjfp534p5"]
+
+[node name="Item" type="Button" unique_id=1823647820]
+custom_minimum_size = Vector2(0, 100)
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="Label" type="Label" parent="." unique_id=323482193]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "hello"
