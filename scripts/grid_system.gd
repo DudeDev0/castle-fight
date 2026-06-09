@@ -27,7 +27,7 @@ func _process(_delta: float) -> void:
 
 	helper_ghost.position = grid_pos
 
-	if Input.is_action_just_pressed("place") and can_place and !on_menu:
+	if Input.is_action_just_pressed("place") and can_place and !on_menu and check_empty():
 		place()
 	elif Input.is_action_just_pressed("delete"):
 		delete()
@@ -111,6 +111,11 @@ func init_grid_data() -> void:
 
 
 func check_empty() -> bool:
+	var data: Array = MeshArray.current[selection_menu.current_key]
+	for x in range(0, data[1], 1):
+		for y in range(0, data[2], 1):
+			if grid_data[Vector2(intersect_pos.x +x, intersect_pos.z -y)][0] != null:
+				return false
 	return true
 
 
