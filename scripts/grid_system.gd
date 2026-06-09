@@ -65,7 +65,9 @@ func place():
 	var instance = data[0].instantiate()
 	instance.position = grid_pos
 
-	grid_data[Vector2(intersect_pos.x, intersect_pos.z)] = [ instance, selection_menu.current_key ]
+	for x in range(0, data[1], 1):
+		for y in range(0, data[2], 1):
+			grid_data[Vector2(intersect_pos.x +x, intersect_pos.z -y)]=[instance, selection_menu.current_key]
 
 	get_parent().add_child(instance)
 
