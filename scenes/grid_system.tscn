@@ -14,6 +14,12 @@ size = Vector2(50, 50)
 [sub_resource type="BoxShape3D" id="BoxShape3D_v4frj"]
 size = Vector3(10, 1, 10)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hmd7o"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_v4frj"]
+size = Vector3(10, 1, 10)
+
 [node name="GridSystem" type="Node3D" unique_id=941752817 node_paths=PackedStringArray("selection_menu", "placing_area", "helper_ghost", "camera")]
 script = ExtResource("1_8615o")
 selection_menu = NodePath("SelectionMenu")
@@ -60,19 +66,24 @@ transform = Transform3D(1, 0, 0, 0, 0.5, 0.86602545, 0, -0.86602545, 0.5, 12, 7.
 keep_aspect = 0
 projection = 1
 current = true
-size = 40.0
+size = 30.0
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=225121471]
 collision_layer = 2
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=768970208]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, -5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, -0.5, -5)
 material_override = SubResource("StandardMaterial3D_v4frj")
 mesh = SubResource("PlaneMesh_hmd7o")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=570679015]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -5)
 shape = SubResource("BoxShape3D_v4frj")
+
+[node name="PlaceableAreaMesh" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D" unique_id=166571514]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+material_override = SubResource("StandardMaterial3D_hmd7o")
+mesh = SubResource("BoxMesh_v4frj")
 
 [node name="Helper" type="Node3D" parent="." unique_id=948603687]
 

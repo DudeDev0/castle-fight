@@ -95,25 +95,23 @@ func helper_ghost_replace() -> void:
 	helper_ghost.add_child(instance)
 
 
-
 func get_current_key_data() -> Array:
 	return MeshArray.current[selection_menu.current_key]
 
 
 func init_grid_data() -> void:
-	for y in range(1, placing_area.shape.size.x + 1, 1):
+	for y in range(0, placing_area.shape.size.x, 1):
 		y = -y
 		for x in range(0, placing_area.shape.size.z, 1):
 
 			grid_data[Vector2(x, y)] = [ null, null ]
 
-	print(grid_data)
-
-
 func check_empty() -> bool:
 	var data: Array = MeshArray.current[selection_menu.current_key]
 	for x in range(0, data[1], 1):
 		for y in range(0, data[2], 1):
+			if !grid_data.has(Vector2(intersect_pos.x +x, intersect_pos.z -y)):
+				return false
 			if grid_data[Vector2(intersect_pos.x +x, intersect_pos.z -y)][0] != null:
 				return false
 	return true
