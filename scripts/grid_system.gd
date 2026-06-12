@@ -4,6 +4,7 @@ extends Node3D
 
 @export var selection_menu: SelectionMenu
 @export var placing_area: CollisionShape3D
+@export var grid_mesh: MeshInstance3D
 @export var helper_ghost: Node3D
 @export var camera: Camera3D
 
@@ -16,6 +17,11 @@ var on_menu: bool = false
 ## structure: grid_pos(Vector2) = [ instance, key_string: String ]
 var grid_data: Dictionary
 
+var color_dict: Dictionary = { "Place": Color.GREEN_YELLOW, "Noplace": Color.ORANGE_RED }
+
+
+@onready var grid_mesh_shader: ShaderMaterial = grid_mesh.material_override
+
 
 func _ready() -> void:
 	init_grid_data()
@@ -24,10 +30,11 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	shoot_ray()
 	grid_position_process()
+	var cell_empty: bool = check_empty()
 
 	helper_ghost.position = grid_pos
 
-	if Input.is_action_just_pressed("place") and can_place and !on_menu and check_empty():
+	if Input.is_action_just_pressed("place") and can_place and !on_menu and cell_empty:
 		place()
 	elif Input.is_action_just_pressed("delete"):
 		delete()
@@ -35,6 +42,11 @@ func _process(_delta: float) -> void:
 
 func shoot_ray() -> void:
 	var mouse_pos: Vector2 = get_viewport().get_mouse_position()
+
+	var shader_mouse_pos: Vector2 = mouse_pos / get_viewport().get_visible_rect().size
+
+	grid_mesh_shader.set_shader_parameter("mouse_pos", shader_mouse_pos)
+
 	var ray_length: int = 20
 	var from: Vector3 = camera.project_ray_origin(mouse_pos)
 	var to: Vector3 = from + camera.project_ray_normal(mouse_pos) * ray_length
@@ -111,9 +123,13 @@ func check_empty() -> bool:
 	for x in range(0, data[1], 1):
 		for y in range(0, data[2], 1):
 			if !grid_data.has(Vector2(intersect_pos.x +x, intersect_pos.z -y)):
+				# grid_mesh_shader.set_shader_parameter("color", color_dict["Noplace"])
+				grid_mesh_shader.set_shader_parameter("color", Vector4(1.0, 0.0, 0.0, 1.0))
 				return false
 			if grid_data[Vector2(intersect_pos.x +x, intersect_pos.z -y)][0] != null:
+				grid_mesh_shader.set_shader_parameter("color", color_dict["Noplace"])
 				return false
+	grid_mesh_shader.set_shader_parameter("color", color_dict["Place"])
 	return true
 
 

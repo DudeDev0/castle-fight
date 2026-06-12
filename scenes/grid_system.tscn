@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://b141hg1r8n6h8" path="res://scripts/grid_system.gd" id="1_8615o"]
 [ext_resource type="Script" uid="uid://chxay853klw3p" path="res://scripts/selection_menu.gd" id="2_76wrp"]
 [ext_resource type="PackedScene" uid="uid://d4usjfp534p5" path="res://scenes/item_template.tscn" id="3_hmd7o"]
+[ext_resource type="Shader" uid="uid://cwt8rxdwsk3bw" path="res://shaders/grid_system.gdshader" id="4_hmd7o"]
+[ext_resource type="Texture2D" uid="uid://bkjik0krx1hvf" path="res://assets/textures/brick_base.png" id="4_karks"]
+[ext_resource type="Texture2D" uid="uid://bpvlbnxu3dh5t" path="res://shaders/grid_texture.png" id="6_rcar5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v4frj"]
 albedo_color = Color(0.12922668, 0.32, 0.086399995, 1)
@@ -15,15 +18,29 @@ size = Vector2(50, 50)
 size = Vector3(10, 1, 10)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hmd7o"]
-albedo_color = Color(0, 0, 0, 1)
+albedo_color = Color(0.16126457, 0.4386034, 0.3555966, 1)
+albedo_texture = ExtResource("4_karks")
+uv1_scale = Vector3(50, 50, 50)
+texture_filter = 0
 
 [sub_resource type="BoxMesh" id="BoxMesh_v4frj"]
 size = Vector3(10, 1, 10)
 
-[node name="GridSystem" type="Node3D" unique_id=941752817 node_paths=PackedStringArray("selection_menu", "placing_area", "helper_ghost", "camera")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r30t2"]
+render_priority = 0
+shader = ExtResource("4_hmd7o")
+shader_parameter/grid_text = ExtResource("6_rcar5")
+shader_parameter/mouse_pos = Vector2(0, 0)
+shader_parameter/color = Vector3(1, 1, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_karks"]
+size = Vector2(10, 10)
+
+[node name="GridSystem" type="Node3D" unique_id=941752817 node_paths=PackedStringArray("selection_menu", "placing_area", "grid_mesh", "helper_ghost", "camera")]
 script = ExtResource("1_8615o")
 selection_menu = NodePath("SelectionMenu")
 placing_area = NodePath("StaticBody3D/CollisionShape3D")
+grid_mesh = NodePath("StaticBody3D/CollisionShape3D/GridMaker")
 helper_ghost = NodePath("Helper")
 camera = NodePath("Camera")
 
@@ -81,9 +98,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -5)
 shape = SubResource("BoxShape3D_v4frj")
 
 [node name="PlaceableAreaMesh" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D" unique_id=166571514]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.5, 0)
 material_override = SubResource("StandardMaterial3D_hmd7o")
 mesh = SubResource("BoxMesh_v4frj")
+
+[node name="GridMaker" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D" unique_id=2077692191]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+material_override = SubResource("ShaderMaterial_r30t2")
+mesh = SubResource("PlaneMesh_karks")
 
 [node name="Helper" type="Node3D" parent="." unique_id=948603687]
 
